@@ -9,12 +9,18 @@ nlp = spacy.load("ru_core_news_sm")
 
 
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, TextAreaField
-from wtforms.validators import DataRequired
+from wtforms import SubmitField, TextAreaField, SelectField
+
+
+styles = [
+    ['dep', 'Синтаксис'],
+    ['ent', 'Именованные сущности'],
+]
 
 
 class MyForm(FlaskForm):
     text = TextAreaField('Предложение', render_kw={'cols': '50'})
+    render_style = SelectField(u'Тип разбора', choices=styles, default='dep')
     submit = SubmitField('Разобрать')
 
 
@@ -24,7 +30,11 @@ def display():
     sentence = None
     if form.validate_on_submit() and form.text.data:
         doc1 = nlp(form.text.data)
-        sentence = displacy.render(doc1, style="dep", page=False)
+        sentence = displacy.render(
+            doc1,
+            style=form.render_style.data or 'dep',
+            page=False
+        )
 
     return render_template('index.html', form=form, sentence=sentence)
 
