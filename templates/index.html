@@ -1,0 +1,30 @@
+<html>
+<head>
+    <title>Displacy Demo</title>
+</head>
+<body>
+<div>
+    Введите предложение для разбора
+    <form action="/" method="post">
+        {{ form.hidden_tag() }}
+        {{ form.text }}
+        <br>
+        <input type="submit" value="Разобрать!">
+    </form>
+</div>
+
+{% if sentence %}
+    <div>
+        {{ sentence | safe }}
+    </div>
+{% endif %}
+
+<div>
+    It is the demo of <a href="https://spacy.io/usage/visualizers">Spacy Displacy</a> syntax tree visualizer
+    with the "ru_core_news_sm" model.
+</div>
+<div>
+    By <a href="https://daviddale.ru">daviddale.ru</a>, 2021
+</div>
+</body>
+</html>
